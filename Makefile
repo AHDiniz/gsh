@@ -6,7 +6,7 @@
 
 CC = gcc # Project's compiler
 INC = -Iinclude # Include path (no need to specify the path of header in #include)
-EXE = gsh # Executable file name
+EXE = bin/gsh # Executable file name
 
 # If the config flag is not set, set it to "debug":
 ifeq ($(config),)
