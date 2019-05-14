@@ -7,6 +7,7 @@
 */
 
 #include "gsh.h"
+#include "parser.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -37,6 +38,19 @@ int GSH_IsRunning()
 
 void GSH_ReadAndExecute()
 {
+	printf("gsh> ");
+
+	// Input testing:
+	char **tokens = GSH_SplitLine(GSH_ReadLine()); // Getting the command tokens
+	int i = 0;
+	char *token = tokens[i];
+
+	while (token != NULL)
+	{
+		printf("%s\n", token);
+		token = tokens[++i];
+	}
+
 	shell.isRunning = 0;
 }
 

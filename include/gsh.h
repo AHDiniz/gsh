@@ -1,3 +1,11 @@
+/**
+ * gsh: simple Linux Group SHell
+ * 
+ * Alan Herculano Diniz & Rafael Belmock Pedruzzi
+ * 
+ * gsh.h: shell's interface
+*/
+
 #ifndef GSH_H_
 
 #define GSH_H_
