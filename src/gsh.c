@@ -8,6 +8,7 @@
 
 #include "gsh.h"
 #include "parser.h"
+#include "internal.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,7 +20,6 @@
 struct gsh
 {
 	int isRunning;
-	char **tokens;
 };
 
 struct gsh shell;
@@ -45,15 +45,16 @@ void GSH_ReadAndExecute()
 	printf("gsh> ");
 
 	// Getting the command tokens:
-	shell.tokens = GSH_SplitLine(GSH_ReadLine());
+	char *line = GSH_ReadLine();
+	char **tokens = GSH_SplitLine(line);
 
 	// Iterating through the tokens:
 	int i = 0, commands = 1;
 	int commandInit = 0, commandEnd = 0; // Positions of the command's beggining and ending
-	while (shell.tokens[i] != NULL)
+	while (tokens[i] != NULL)
 	{
 		// Checking if is the same command:
-		if (strncmp(shell.tokens[i], "->", 2) == 0)
+		if (strncmp(tokens[i], "->", 2) == 0)
 		{
 			commands++; // There's a new command
 			
@@ -68,20 +69,31 @@ void GSH_ReadAndExecute()
 		// If the current command is still the same:
 		
 		// Checking if the command is an internal operation:
-		if (strncmp(shell.tokens[i], "exit", 4) == 0)
+		if (strncmp(tokens[i], "exit", 4) == 0 && GSH_Exit())
 		{
 			shell.isRunning = 0;
 			break;
 		}
-		else if (strncmp(shell.tokens[i], "mywait", 6) == 0)
+		else if (strncmp(tokens[i], "mywait", 6) == 0)
 		{
-			// Treat mywait operation
+			GSH_MyWait();
 		}
+		else
+		{
+			#ifdef GSH_DEBUG
+				printf("Something\n");
+			#endif
+		}
+
+		// Going to the next token:
+		i++;
 	}
+
+	free(tokens);
+	free(line);
 }
 
 void GSH_Finish()
 {
 	// Use this to free memory if necessary
-	free(shell.tokens);
 }
