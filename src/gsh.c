@@ -13,9 +13,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+#include <sys/wait.h>
 
 // Maximum amount of commands that will be executed
 #define MAX_COMMANDS 5
+#define MAX_ARGS     3
 
 struct gsh
 {
@@ -23,6 +26,15 @@ struct gsh
 };
 
 struct gsh shell;
+
+/**
+ * Defining function to execute a given command:
+ * 
+ * Inputs: all the program arguments: the executable and it's args (max. 3)
+ * 
+ * Output: bool like int that tells if the operation was a success
+*/
+static int GSH_Execute(char *args[]);
 
 int GSH_Init()
 {
@@ -51,6 +63,9 @@ void GSH_ReadAndExecute()
 	// Iterating through the tokens:
 	int i = 0, commands = 1;
 	int commandInit = 0, commandEnd = 0; // Positions of the command's beggining and ending
+	char *args[MAX_ARGS + 2];
+	args[MAX_ARGS + 1] = NULL;
+	int internal = 0; // Tells if current command is an internal operation
 	while (tokens[i] != NULL)
 	{
 		// Checking if is the same command:
@@ -60,6 +75,10 @@ void GSH_ReadAndExecute()
 			
 			// Checking if the command limit wasn't broken:
 			if (commands >= MAX_COMMANDS + 1) break;
+
+			GSH_Execute(args); // Executing the current command
+			for (int j = 0; j <= MAX_ARGS; j++)
+				args[j] = " ";
 			
 			// Getting the next token:
 			i++;
@@ -72,22 +91,30 @@ void GSH_ReadAndExecute()
 		if (strncmp(tokens[i], "exit", 4) == 0 && GSH_Exit())
 		{
 			shell.isRunning = 0;
+			internal = 1;
 			break;
 		}
 		else if (strncmp(tokens[i], "mywait", 6) == 0)
 		{
 			GSH_MyWait();
+			internal = 1;
 		}
 		else
 		{
-			#ifdef GSH_DEBUG
-				printf("Something\n");
-			#endif
+			// Checking if the position of the token in the command is valid:
+			int relativePos = commandEnd - commandInit;
+			if (relativePos <= MAX_ARGS)
+			{
+				args[relativePos] = tokens[i]; // Adding the argument to current command
+			}
+			commandEnd++;
 		}
 
 		// Going to the next token:
 		i++;
 	}
+	// Executing the last command:
+	if (!internal) GSH_Execute(args);
 
 	free(tokens);
 	free(line);
@@ -96,4 +123,26 @@ void GSH_ReadAndExecute()
 void GSH_Finish()
 {
 	// Use this to free memory if necessary
+}
+
+static int GSH_Execute(char *args[])
+{
+	pid_t pid = fork();
+	if (pid == 0) // Child process
+	{
+		// Executing the program:
+		int success = execv(args[0], args);
+		if (!success) goto proc_error;
+	}
+	else if (pid > 0) // Parent
+	{
+		waitpid(pid, NULL, 0);
+	}
+	else goto proc_error;
+	
+	return 1;
+
+	proc_error:
+	fprintf(stderr, "OOPS :O... Looks like there was an error while trying to execute %s.\n", args[0]);
+	return 0;
 }
