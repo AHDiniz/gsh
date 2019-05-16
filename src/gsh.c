@@ -15,6 +15,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <signal.h>
+#include <sys/types.h>
 
 // Maximum amount of commands that will be executed
 #define MAX_COMMANDS 5
@@ -23,6 +25,9 @@
 struct gsh
 {
 	int isRunning;
+	int zombies = 0;
+	pid_t pid;
+	sigset_t sigmask;
 };
 
 struct gsh shell;
@@ -38,6 +43,13 @@ static int GSH_Execute(char *args[]);
 
 int GSH_Init()
 {
+	// Starting gsh as lider of a session:
+	pid_t p = fork();
+	if(p) exit(0);
+	shell.pid = setsid();
+
+	// 
+
 	// Welcome message:
 	printf("Welcome to gsh: the Linux Group SHell :)\n");
 	printf("Written by Alan Diniz and Rafael Belmock.\n\n");
@@ -45,6 +57,10 @@ int GSH_Init()
 	shell.isRunning = 1; // The shell is now running
 	
 	return 1;
+
+	init_error:
+	fprintf(stderr, "OOPS :O... Looks like there was an initialization error.\n");
+	return 0;
 }
 
 int GSH_IsRunning()
