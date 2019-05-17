@@ -25,12 +25,28 @@
 struct gsh
 {
 	int isRunning;
-	int zombies = 0;
+	int childs, zombies;
 	pid_t pid;
 	sigset_t sigmask;
 };
 
 struct gsh shell;
+
+/**
+ * Defining signal handlers:
+ *
+*/
+
+void Child_Handler(){
+	// shell.childs -= 1;
+	// shell.zombies += 1;
+
+	// while(1) {
+
+	// }
+
+	printf("I got a SIGCHLD! XD\n");
+}
 
 /**
  * Defining function to execute a given command:
@@ -48,12 +64,11 @@ int GSH_Init()
 	if(p) exit(0);
 	shell.pid = setsid();
 
-	// 
-
 	// Welcome message:
 	printf("Welcome to gsh: the Linux Group SHell :)\n");
 	printf("Written by Alan Diniz and Rafael Belmock.\n\n");
 	
+	shell.childs = shell.zombies = 0;
 	shell.isRunning = 1; // The shell is now running
 	
 	return 1;
@@ -152,6 +167,8 @@ static int GSH_Execute(char *args[])
 	}
 	else if (pid > 0) // Parent
 	{
+		sleep(10);
+		kill(pid,SIGINT);
 		waitpid(pid, NULL, 0);
 	}
 	else goto proc_error;
