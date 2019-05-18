@@ -207,6 +207,8 @@ static int GSH_Execute(char *args[])
 
 static void GSH_Controller(char *args[])
 {
+	signal(SIGUSR1, SIGUSR1_Handler);
+
 	// Creating a child process that will control the requested programs:
 	pid_t pid = fork();
 
