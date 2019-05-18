@@ -1,7 +1,7 @@
 /**
  * gsh: simple Linux Group SHell
  * 
- * Alan Herculano Diniz & Rafael Belmock Pedruzzi
+ * Alan Herculano Diniz, Rafael Belmock Pedruzzi & Israel Santos
  * 
  * gsh.h: shell's interface
 */

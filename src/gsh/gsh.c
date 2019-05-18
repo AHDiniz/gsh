@@ -1,7 +1,7 @@
 /**
  * gsh: simple Linux Group SHell
  * 
- * Alan Herculano Diniz & Rafael Belmock Pedruzzi
+ * Alan Herculano Diniz, Rafael Belmock Pedruzzi & Israel Santos
  * 
  * gsh.c: implementing the shell's interface functions
 */
@@ -93,9 +93,6 @@ void GSH_ReadAndExecute()
 	// Getting the command tokens:
 	char *line = GSH_ReadLine();
 	char **tokens = GSH_SplitLine(line);
-	
-	// Passing the arguments to the controller program:
-	GSH_Controller(tokens);
 
 	// Iterating through the tokens:
 	int i = 0, commands = 1;
@@ -122,19 +119,37 @@ void GSH_ReadAndExecute()
 			commandInit = commandEnd = i; // Resetting the command limits
 			continue;
 		}
+
 		// If the current command is still the same:
-		
 		// Checking if the command is an internal operation:
-		if (strncmp(tokens[i], "exit", 4) == 0 && GSH_Exit())
+		if (strncmp(tokens[i], "exit", 4) == 0) // Exit command
 		{
-			shell.isRunning = 0;
-			internal = 1;
-			break;
+			if (commands == 1 && GSH_Exit())
+			{
+				shell.isRunning = 0;
+				internal = 1;
+				break;
+			}
+			else
+			{
+				fprintf(stderr, "OOPS :O... exit command wasn't used properlly.\n");
+				fprintf(stderr, "Try executing it on it's own and it'll probably work. :D\n");
+			}
+			
 		}
-		else if (strncmp(tokens[i], "mywait", 6) == 0)
+		else if (strncmp(tokens[i], "mywait", 6) == 0) // MyWait command
 		{
-			GSH_MyWait();
-			internal = 1;
+			if (commands == 1)
+			{
+				GSH_MyWait();
+				internal = 1;
+			}
+			else
+			{
+				fprintf(stderr, "OOPS :O... mywait command wasn't used properlly.\n");
+				fprintf(stderr, "Try executing it on it's own and it'll probably work. :D\n");
+			}
+			
 		}
 		else
 		{
@@ -150,8 +165,8 @@ void GSH_ReadAndExecute()
 		// Going to the next token:
 		i++;
 	}
-	// Executing the last command:
-	// if (!internal) GSH_Execute(args);
+	// Passing the arguments to the controller program:
+	if (!internal) GSH_Controller(tokens);
 
 	free(tokens);
 	free(line);

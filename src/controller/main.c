@@ -1,7 +1,7 @@
 /**
  * gsh: simple Linux Group SHell
  * 
- * Alan Herculano Diniz & Rafael Belmock Pedruzzi
+ * Alan Herculano Diniz, Rafael Belmock Pedruzzi & Israel Santos
  * 
  * controller.c: this program will execute the commands to
  * create and execute the programs requested by the user.

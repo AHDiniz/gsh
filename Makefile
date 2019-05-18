@@ -1,6 +1,6 @@
 # gsh: simple Linux Group SHell
 #
-# Alan Herculano Diniz & Rafael Belmock Pedruzzi
+# Alan Herculano Diniz, Rafael Belmock Pedruzzi & Israel Santos
 #
 # Project's build file
 
@@ -33,7 +33,7 @@ C_FLAGS = -DGSH_RELEASE # Creating an in-program flag to tell it's in debug mode
 endif
 
 # Compilation target
-gsh: # controller
+gsh: controller
 	$(CC) -o $(GSH) $(wildcard src/gsh/*.c) $(INC_GSH) $(CMP_FLAGS) $(C_FLAGS)
 
 controller:
