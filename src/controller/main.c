@@ -21,13 +21,5 @@ int main(int argc, char *argv[])
 		printf("Entered in the process creator.\n");
 	#endif
 
-	int i = 0;
-	char *token = argv[i];
-	while (token != NULL)
-	{
-		printf("%s\n", token);
-		token = argv[++i];
-	}
-
 	return 0;
 }
