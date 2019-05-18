@@ -46,6 +46,10 @@ void Child_Handler(){
 	printf("I got a SIGCHLD! XD\n");
 }
 
+void SIGUSR1_Handler() {
+	printf("I got a SIGUSR1!\n");
+}
+
 /**
  * Defining function to execute a given command:
  * 
