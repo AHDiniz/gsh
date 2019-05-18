@@ -225,6 +225,7 @@ static void GSH_Controller(char *args[])
 	else if (pid > 0)
 	{
 		waitpid(pid, NULL, 0);
+		printf("I am awake again! It worked?\n");
 	}
 	else goto proc_error;
 	
