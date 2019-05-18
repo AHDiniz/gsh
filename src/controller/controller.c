@@ -39,7 +39,7 @@ void Controller_Execute(char *args[])
 	commandArgs[MAX_ARGS + 1] = NULL;
 	int commandInit = 0, commandEnd = 0;
 	int internal = 0;
-	for (int i = 0; args[i] != NULL; i++)
+	for (int i = 1; args[i] != NULL; i++)
 	{
 		// Checking if the command ended:
 		if (strncmp(args[i], "->", 2) == 0 || strncmp(args[i], "\n", 1) == 0)
