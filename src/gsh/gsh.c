@@ -35,7 +35,8 @@ struct gsh shell;
  *
 */
 
-void Child_Handler(){
+void Child_Handler()
+{
 	// shell.childs -= 1;
 	// shell.zombies += 1;
 
@@ -46,7 +47,8 @@ void Child_Handler(){
 	printf("I got a SIGCHLD! XD\n");
 }
 
-void SIGUSR1_Handler() {
+void SIGUSR1_Handler()
+{
 	printf("I got a SIGUSR1!\n");
 }
 
@@ -67,7 +69,7 @@ static int GSH_Execute(char *args[]);
  * Side effects: creates a child process responsible to execute the requested
  * programs.
 */
-static void GSH_Controller(char *args[]);
+static int GSH_Controller(char *args[]);
 
 int GSH_Init()
 {
@@ -205,7 +207,7 @@ static int GSH_Execute(char *args[])
 	return 0;
 }
 
-static void GSH_Controller(char *args[])
+static int GSH_Controller(char *args[])
 {
 	signal(SIGUSR1, SIGUSR1_Handler);
 
@@ -236,7 +238,9 @@ static void GSH_Controller(char *args[])
 	else goto proc_error;
 	
 	free(realArgs);
+	return 1;
 
 	proc_error:
 	fprintf(stderr, "OOPS :O... Looks like there was an error while trying to execute the given commands.\n");
+	return 0;
 }
