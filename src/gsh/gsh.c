@@ -26,8 +26,6 @@ struct gsh
 {
 	int isRunning;
 	int childs, zombies;
-	pid_t pid;
-	sigset_t sigmask;
 };
 
 struct gsh shell;
@@ -57,13 +55,18 @@ void Child_Handler(){
 */
 static int GSH_Execute(char *args[]);
 
+/**
+ * Defining function to execute the program creator/controller program:
+ * 
+ * Inputs: all the line arguments that where cought in the user input.
+ * 
+ * Side effects: creates a child process responsible to execute the requested
+ * programs.
+*/
+static void GSH_Controller(char *args[]);
+
 int GSH_Init()
 {
-	// Starting gsh as lider of a session:
-	pid_t p = fork();
-	if(p) exit(0);
-	shell.pid = setsid();
-
 	// Welcome message:
 	printf("Welcome to gsh: the Linux Group SHell :)\n");
 	printf("Written by Alan Diniz and Rafael Belmock.\n\n");
@@ -90,6 +93,9 @@ void GSH_ReadAndExecute()
 	// Getting the command tokens:
 	char *line = GSH_ReadLine();
 	char **tokens = GSH_SplitLine(line);
+	
+	// Passing the arguments to the controller program:
+	GSH_Controller(tokens);
 
 	// Iterating through the tokens:
 	int i = 0, commands = 1;
@@ -107,7 +113,7 @@ void GSH_ReadAndExecute()
 			// Checking if the command limit wasn't broken:
 			if (commands >= MAX_COMMANDS + 1) break;
 
-			GSH_Execute(args); // Executing the current command
+			// GSH_Execute(args); // Executing the current command
 			for (int j = 0; j <= MAX_ARGS; j++)
 				args[j] = " ";
 			
@@ -145,7 +151,7 @@ void GSH_ReadAndExecute()
 		i++;
 	}
 	// Executing the last command:
-	if (!internal) GSH_Execute(args);
+	// if (!internal) GSH_Execute(args);
 
 	free(tokens);
 	free(line);
@@ -178,4 +184,16 @@ static int GSH_Execute(char *args[])
 	proc_error:
 	fprintf(stderr, "OOPS :O... Looks like there was an error while trying to execute %s.\n", args[0]);
 	return 0;
+}
+
+static void GSH_Controller(char *args[])
+{
+	// Creating a child process that will control the requested programs:
+	pid_t pid = fork();
+
+	// If it is the child:
+	if (pid == 0)
+	{
+		// exec();
+	}
 }

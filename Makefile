@@ -5,8 +5,9 @@
 # Project's build file
 
 CC = gcc # Project's compiler
-INC = -Iinclude # Include path (no need to specify the path of header in #include)
-EXE = bin/gsh # Executable file name
+INC_GSH = -Iinclude/gsh # -Iinclude/controller # Include path (no need to specify the path of header in #include)
+GSH = bin/gsh # Executable file name
+CONT = bin/controller # Auxiliar program file name
 
 # If the config flag is not set, set it to "debug":
 ifeq ($(config),)
@@ -32,5 +33,8 @@ C_FLAGS = -DGSH_RELEASE # Creating an in-program flag to tell it's in debug mode
 endif
 
 # Compilation target
-all:
-	$(CC) -o $(EXE) $(wildcard src/*.c) $(INC) $(CMP_FLAGS) $(C_FLAGS)
+gsh: # controller
+	$(CC) -o $(GSH) $(wildcard src/gsh/*.c) $(INC_GSH) $(CMP_FLAGS) $(C_FLAGS)
+
+controller:
+	$(CC) -o $(CONT) $(wildcard src/controller/*.c) $(CMP_FLAGS) $(C_FLAGS)
