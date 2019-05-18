@@ -42,7 +42,7 @@ void Controller_Execute(char *args[])
 	for (int i = 0; args[i] != NULL; i++)
 	{
 		// Checking if the command ended:
-		if (strncmp(args[i], "->", 2) == 0)
+		if (strncmp(args[i], "->", 2) == 0 || strncmp(args[i], "\n", 1) == 0)
 		{
 			// Checking if there are too many commands:
 			commands++;
@@ -78,7 +78,6 @@ void Controller_Execute(char *args[])
 			commandEnd++;
 		}
 	}
-	Controller_RunCmd(commandArgs, 1);
 }
 
 static int Controller_RunCmd(char *args[], int fg)
