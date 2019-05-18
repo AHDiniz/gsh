@@ -47,6 +47,8 @@ void Controller_Execute(char *args[])
 			commands++;
 			if (commands > MAX_COMMANDS) break;
 
+			Controller_RunCmd(commandArgs, 1);
+
 			// Cleaning the command args buffer:
 			for (int j = 0; j <= MAX_ARGS; j++)
 				commandArgs[j] = " ";
