@@ -191,9 +191,30 @@ static void GSH_Controller(char *args[])
 	// Creating a child process that will control the requested programs:
 	pid_t pid = fork();
 
+	int count; // Amount of tokens in args
+	for (count = 0; args[count] != NULL; count++);
+	// Setting the arguments that will be passed on exec:
+	char **realArgs = malloc(sizeof(*realArgs) * count + 1);
+	
 	// If it is the child:
 	if (pid == 0)
 	{
-		// exec();
+		realArgs[0] = "./bin/controller";
+		for (int i = 1; i <= count; i++)
+			realArgs[i] = args[i - 1];
+
+		// Executing the program:
+		int success = execv(realArgs[0], realArgs);
+		if (!success) goto proc_error;
 	}
+	else if (pid > 0)
+	{
+		waitpid(pid, NULL, 0);
+	}
+	else goto proc_error;
+	
+	free(realArgs);
+
+	proc_error:
+	fprintf(stderr, "OOPS :O... Looks like there was an error while trying to execute the given commands.\n");
 }
