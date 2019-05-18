@@ -49,7 +49,7 @@ void Child_Handler()
 
 void SIGUSR1_Handler()
 {
-	printf("I got a SIGUSR1!\n");
+	// printf("I got a SIGUSR1!\n");
 }
 
 /**
@@ -233,7 +233,7 @@ static int GSH_Controller(char *args[])
 	else if (pid > 0)
 	{
 		waitpid(pid, NULL, 0);
-		printf("I am awake again! It worked?\n");
+		// printf("I am awake again! It worked?\n");
 	}
 	else goto proc_error;
 	

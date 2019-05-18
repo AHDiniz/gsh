@@ -38,6 +38,7 @@ void Controller_Execute(char *args[])
 	char *commandArgs[MAX_ARGS + 2];
 	commandArgs[MAX_ARGS + 1] = NULL;
 	int commandInit = 0, commandEnd = 0;
+	int internal = 0;
 	for (int i = 0; args[i] != NULL; i++)
 	{
 		// Checking if the command ended:
@@ -62,7 +63,10 @@ void Controller_Execute(char *args[])
 
 		// Ignoring internal commands:
 		if (strncmp(args[i], "exit", 4) == 0 || strncmp(args[i], "mywait", 6) == 0)
+		{
+			internal = 1;
 			continue;
+		}
 		else
 		{
 			// Checking if the position of the token in the command is valid:
@@ -74,6 +78,7 @@ void Controller_Execute(char *args[])
 			commandEnd++;
 		}
 	}
+	Controller_RunCmd(commandArgs, 1);
 }
 
 static int Controller_RunCmd(char *args[], int fg)
