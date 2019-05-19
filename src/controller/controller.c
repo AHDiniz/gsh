@@ -47,9 +47,10 @@ void Controller_Execute(int argc, char *args[])
 		{
 			// Checking if there are too many commands:
 			commands++;
-			if (commands > MAX_COMMANDS) break;
-
-			Controller_RunCmd(commandArgs, 1);
+			if (commands > MAX_COMMANDS)
+				fprintf(stderr, "OOPS :O... Max number of arguments reached.\n");
+			else 
+				Controller_RunCmd(commandArgs, 1);
 
 			// Cleaning the command args buffer:
 			for (int j = 0; j <= MAX_ARGS; j++)
