@@ -197,8 +197,13 @@ static int GSH_Execute(char *args[])
 static int GSH_Controller(char *args[])
 {
 	// signal(SIGUSR1, SIGUSR1_Handler);
-	for (int j = 0; args[j] != NULL; j++)
+	for (int j = 0; ; j++)
 	{
+		if(args[j] == NULL)
+		{
+			printf("NULL\n");
+			break;
+		}
 		printf("%s\n", args[j]);
 	}
 

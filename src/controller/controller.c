@@ -85,8 +85,13 @@ void Controller_Execute(char *args[])
 
 static int Controller_RunCmd(char *args[], int fg)
 {
-	for (int j = 0; args[j] != NULL; j++)
+	for (int j = 0; ; j++)
 	{
+		if(args[j] == NULL)
+		{
+			printf("NULL\n");
+			break;
+		}
 		printf("%s\n", args[j]);
 	}
 
