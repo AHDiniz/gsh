@@ -59,6 +59,7 @@ void Controller_Execute(char *args[])
 
 			// Getting the next token:
 			i++;
+			if(args[i] == NULL) break;
 			continue;
 		}
 
