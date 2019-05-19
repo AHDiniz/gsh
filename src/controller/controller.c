@@ -55,7 +55,7 @@ void Controller_Execute(int argc, char *args[])
 				// 	if (commandArgs[j] != NULL)
 				// 		printf("%s\n", commandArgs[j]);
 				// 	else printf("NULL\n");
-				Controller_RunCmd(commandArgs, 1);
+				Controller_RunCmd(commandArgs, 0);
 			}
 			// Cleaning the command args buffer:
 			for (int j = 0; j < MAX_ARGS + 1; j++)
