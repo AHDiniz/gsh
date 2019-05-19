@@ -92,7 +92,6 @@ static int Controller_RunCmd(char *args[], int fg)
 	else if (pid > 0)
 	{
 		waitpid(pid, NULL, 0);
-		kill(getppid(), SIGUSR1);
 	}
 	else goto proc_error;
 

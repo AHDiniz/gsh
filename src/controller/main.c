@@ -28,5 +28,7 @@ int main(int argc, char *argv[])
 
 	Controller_Execute(argc, argv);
 
+	kill(getppid(), SIGUSR1);
+
 	return 0;
 }
