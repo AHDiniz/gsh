@@ -91,7 +91,8 @@ static int Controller_RunCmd(char *args[], int fg)
 		// const char *constArgs[MAX_ARGS + 2];
 		// for (int i = 0; i < MAX_ARGS + 2; i++)
 		// 	constArgs[i] = args[i];
-		int success = execv(constArgs[0], constArgs);
+		// int success = execv(constArgs[0], constArgs);
+		int success = execv(args[0], args);
 		if (success == -1) goto proc_error;
 	}
 	else if (pid > 0)
