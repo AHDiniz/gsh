@@ -28,7 +28,7 @@ endif
 # Release configuration setup:
 ifeq ($(config), release)
 
-CMP_FLAGS = -O2 -w # Compilation flags
+CMP_FLAGS = -O3 -w # Compilation flags
 C_FLAGS = -DGSH_RELEASE # Creating an in-program flag to tell it's in debug mode (same as #define GSH_RELEASE)
 
 endif

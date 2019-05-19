@@ -89,9 +89,12 @@ void Controller_Execute(int argc, char *args[])
 static int Controller_RunCmd(char *args[], int fg)
 {
 	for (int j = 0; j < MAX_COMMANDS + 2; j++)
-		if (args[j] != NULL)
+	{
+		if (args[j] == NULL)
+			printf("NULL\n");
+		else
 			printf("%s\n", args[j]);
-		else printf("NULL\n");
+	}
 	pid_t pid = fork();
 	if (pid == 0)
 	{
