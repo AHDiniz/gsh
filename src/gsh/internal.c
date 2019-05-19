@@ -20,7 +20,8 @@ int GSH_Exit()
 void GSH_MyWait()
 {
 	pid_t pid;
-	do {
+	do
+	{
 		pid = waitpid(-1, NULL, WNOHANG);
 		if(pid == -1) goto wait_error;
 	} while(pid > 0);

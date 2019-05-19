@@ -106,12 +106,17 @@ void GSH_ReadAndExecute()
 	// char *args[MAX_ARGS + 2];
 	// args[MAX_ARGS + 1] = NULL;
 	int internal = 0; // Tells if current command is an internal operation
+	for (int i = 0; tokens[i] != NULL; i++)
+	{
+		if (strncmp(tokens[i], "->", 2) == 0)
+			commands++; // There's a new command
+	}
 	while (tokens[i] != NULL && !internal)
 	{
 		// // Checking if is the same command:
 		if (strncmp(tokens[i], "->", 2) == 0)
 		{
-			commands++; // There's a new command
+			// commands++; // There's a new command
 			
 		// 	// Checking if the command limit wasn't broken:
 		// 	if (commands >= MAX_COMMANDS + 1) break;
