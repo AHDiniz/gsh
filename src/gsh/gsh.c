@@ -106,13 +106,6 @@ void GSH_ReadAndExecute()
 	// char *args[MAX_ARGS + 2];
 	// args[MAX_ARGS + 1] = NULL;
 	int internal = 0; // Tells if current command is an internal operation
-
-	// Counting the number of commands given:
-	for (int i = 0; tokens[i] != NULL; i++)
-	{
-		if (strncmp(tokens[i], "->", 2) == 0)
-			commands++; // There's a new command
-	}
 	
 	while (tokens[i] != NULL && !internal)
 	{
@@ -128,7 +121,7 @@ void GSH_ReadAndExecute()
 		if (strncmp(tokens[i], "exit", 4) == 0) // Exit command
 		{
 			internal = 1;
-			if (commands == 1 && GSH_Exit())
+			if (commands == 1 && tokens[i+1] == NULL && GSH_Exit())
 			{
 				shell.isRunning = 0;
 				break;
@@ -143,7 +136,7 @@ void GSH_ReadAndExecute()
 		else if (strncmp(tokens[i], "mywait", 6) == 0) // MyWait command
 		{
 			internal = 1;
-			if (commands == 1)
+			if (commands == 1 && tokens[i+1] == NULL)
 			{
 				GSH_MyWait();
 			}

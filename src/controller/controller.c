@@ -30,7 +30,7 @@
 */
 static int Controller_RunCmd(char *args[], int fg);
 
-void Controller_Execute(char *args[])
+void Controller_Execute(int argc, char *args[])
 {
 	int commands = 1; // Amount of commands in the input
 	
@@ -39,7 +39,7 @@ void Controller_Execute(char *args[])
 	commandArgs[MAX_ARGS + 1] = NULL;
 	int commandInit = 0, commandEnd = 0;
 	// int internal = 0;
-	for (int i = 0; args[i] != NULL; i++)
+	for (int i = 0; i < argc; i++)
 	{
 		// Checking if the command ended:
 		if (strncmp(args[i], "->", 2) == 0) // || strncmp(args[i], "\n", 1) == 0)
@@ -59,7 +59,7 @@ void Controller_Execute(char *args[])
 
 			// Getting the next token:
 			i++;
-			if(args[i] == NULL) break;
+			if(i >= argc) goto operator_error;
 			continue;
 		}
 
@@ -81,6 +81,11 @@ void Controller_Execute(char *args[])
 		// }
 	}
 	Controller_RunCmd(commandArgs, 1);
+
+	return;
+
+	operator_error:
+	fprintf(stderr, "OOPS :O... missing second argument of operator ->.\n");
 }
 
 static int Controller_RunCmd(char *args[], int fg)
