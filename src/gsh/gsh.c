@@ -164,7 +164,7 @@ static int GSH_Execute(char *args[])
 	{
 		// Executing the program:
 		int success = execv(args[0], args);
-		if (!success) goto proc_error;
+		if (success == -1) goto proc_error;
 	}
 	else if (pid > 0) // Parent
 	{
@@ -192,7 +192,7 @@ static int GSH_Controller(char *args[])
 	if (pid == 0)
 	{
 		int success = execv("./bin/controller", args);
-		if (!success) goto proc_error;
+		if (success == -1) goto proc_error;
 	}
 	else if (pid > 0)
 	{

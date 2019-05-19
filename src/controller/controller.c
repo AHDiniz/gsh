@@ -87,7 +87,7 @@ static int Controller_RunCmd(char *args[], int fg)
 	if (pid == 0)
 	{
 		int success = execv(args[0], args);
-		if (!success) goto proc_error;
+		if (success == -1) goto proc_error;
 	}
 	else if (pid > 0)
 	{
