@@ -30,22 +30,7 @@ struct gsh
 
 struct gsh shell;
 
-/**
- * Defining signal handlers:
- *
-*/
-
-void Child_Handler()
-{
-	// shell.childs -= 1;
-	// shell.zombies += 1;
-
-	// while(1) {
-
-	// }
-
-	printf("I got a SIGCHLD! XD\n");
-}
+// Defining signal handlers:
 
 void SIGUSR1_Handler() {}
 
