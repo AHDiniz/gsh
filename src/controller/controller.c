@@ -100,5 +100,5 @@ static int Controller_RunCmd(char *args[], int fg)
 
 	proc_error:
 	fprintf(stderr, "OOPS :O... Looks like there was an error while trying to execute %s.\n", args[0]);
-	return 0;
+	exit(1);
 }
