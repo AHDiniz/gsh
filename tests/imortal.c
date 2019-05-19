@@ -2,7 +2,7 @@
 
 int main()
 {
-	printf("ONE TO LIVE FEREVER!\n");
-    for(;;);
+	printf("ONE TO LIVE FOREVER!\n");
+	for(;;);
 	return 0;
 }

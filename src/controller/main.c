@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 		printf("Entered in the process creator.\n");
 	#endif
 
-	Controller_Execute(argc,argv);
+	Controller_Execute(argc, argv);
 
 	return 0;
 }

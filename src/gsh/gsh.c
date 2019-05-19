@@ -79,9 +79,9 @@ int GSH_Init()
 	
 	return 1;
 
-	init_error:
-	fprintf(stderr, "OOPS :O... Looks like there was an initialization error.\n");
-	return 0;
+	// init_error:
+	// fprintf(stderr, "OOPS :O... Looks like there was an initialization error.\n");
+	// return 0;
 }
 
 int GSH_IsRunning()
