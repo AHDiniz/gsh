@@ -47,7 +47,8 @@ void Controller_Execute(int argc, char *args[])
 		{
 			// Checking if there are too many commands:
 			commands++;
-			if (commands > MAX_COMMANDS) goto command_error;
+			if (commands > MAX_COMMANDS)
+				fprintf(stderr, "OOPS :O... Max number of arguments reached.\n");
 			else 
 				Controller_RunCmd(commandArgs, 1);
 
@@ -78,11 +79,6 @@ void Controller_Execute(int argc, char *args[])
 
 	operator_error:
 	fprintf(stderr, "OOPS :O... missing second argument of operator ->.\n");
-
-	return;
-
-	command_error:
-	fprintf(stderr, "OOPS :O... Max number of arguments reached.\n");
 }
 
 static int Controller_RunCmd(char *args[], int fg)
