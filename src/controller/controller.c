@@ -48,15 +48,13 @@ void Controller_Execute(int argc, char *args[])
 			// Checking if there are too many commands:
 			commands++;
 			if (commands > MAX_COMMANDS)
-				fprintf(stderr, "OOPS :O... Max number of arguments reached.\n");
-			else
 			{
-				// for (int j = 0; j < MAX_COMMANDS + 2; j++)
-				// 	if (commandArgs[j] != NULL)
-				// 		printf("%s\n", commandArgs[j]);
-				// 	else printf("NULL\n");
-				Controller_RunCmd(commandArgs, 1);
+				fprintf(stderr, "OOPS :O... Max number of arguments reached.\n");
+				break;
 			}
+
+			Controller_RunCmd(commandArgs, 1);
+
 			// Cleaning the command args buffer:
 			for (int j = 0; j < MAX_ARGS + 1; j++)
 				commandArgs[j] = NULL;
@@ -88,13 +86,6 @@ void Controller_Execute(int argc, char *args[])
 
 static int Controller_RunCmd(char *args[], int fg)
 {
-	for (int j = 0; j < MAX_COMMANDS + 2; j++)
-	{
-		if (args[j] == NULL)
-			printf("NULL\n");
-		else
-			printf("%s\n", args[j]);
-	}
 	pid_t pid = fork();
 	if (pid == 0)
 	{
