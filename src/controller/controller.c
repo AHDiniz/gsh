@@ -48,7 +48,11 @@ void Controller_Execute(char *args[])
 			commands++;
 			if (commands > MAX_COMMANDS) break;
 
-			Controller_RunCmd(commandArgs, 1);
+			// Controller_RunCmd(commandArgs, 1);
+			for (int j = 0; args[j] != NULL; j++)
+			{
+				printf("%s\n", args[j]);
+			}
 
 			// Cleaning the command args buffer:
 			for (int j = 0; j <= MAX_ARGS; j++)
