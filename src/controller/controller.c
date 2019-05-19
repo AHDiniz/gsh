@@ -79,6 +79,15 @@ void Controller_Execute(int argc, char *args[])
 			for (int j = 0; j < MAX_ARGS + 2; j++)
 				commandArgs[j] = NULL;
 			
+			for (int j = 0; j < MAX_ARGS + 2; j++)
+			{
+				if (commandArgs[j] == NULL)
+					printf("NULL\n");
+				else
+				{
+					printf("%s\n", commandArgs[j]);
+				}
+			}
 			// Getting the next token:
 			i++;
 			if(i >= argc) goto operator_error;
