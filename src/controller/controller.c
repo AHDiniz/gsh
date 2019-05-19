@@ -36,7 +36,10 @@ void Controller_Execute(int argc, char *args[])
 	
 	// Command arguments' data:
 	char *commandArgs[MAX_ARGS + 2];
-	commandArgs[MAX_ARGS + 1] = NULL;
+	// commandArgs[MAX_ARGS + 1] = NULL;
+	// Initializing the command args buffer:
+	for (int j = 0; j <= MAX_ARGS; j++)
+		commandArgs[j] = NULL;
 	int commandInit = 0, commandEnd = 0;
 	// int internal = 0;
 	for (int i = 0; i < argc; i++)
@@ -52,7 +55,7 @@ void Controller_Execute(int argc, char *args[])
 
 			// Cleaning the command args buffer:
 			for (int j = 0; j <= MAX_ARGS; j++)
-				commandArgs[j] = " ";
+				commandArgs[j] = NULL;
 			
 			// Resetting the command limits:
 			commandInit = commandEnd = i;
