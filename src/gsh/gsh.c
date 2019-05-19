@@ -56,8 +56,8 @@ static int GSH_Controller(char *args[]);
 int GSH_Init()
 {
 	// Welcome message:
-	printf("Welcome to gsh: the Linux Group SHell :)\n");
-	printf("Written by Alan Diniz and Rafael Belmock.\n\n");
+	printf("Welcome to gsh: the Linux Group SHell :D\n");
+	printf("Written by Alan Diniz, Rafael Belmock and Israel Santos.\n\n");
 	
 	shell.childs = shell.zombies = 0;
 	shell.isRunning = 1; // The shell is now running
