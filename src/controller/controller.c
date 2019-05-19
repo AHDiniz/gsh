@@ -39,31 +39,12 @@ void Controller_Execute(int argc, char *args[])
 	// Initializing the command args buffer:
 	for (int j = 0; j < MAX_ARGS + 2; j++)
 		commandArgs[j] = NULL;
-	for (int j = 0; j < MAX_ARGS + 2; j++)
-	{
-		if (commandArgs[j] == NULL)
-			printf("NULL\n");
-		else
-		{
-			printf("%s\n", commandArgs[j]);
-		}
-	}
 	int commandInit = 0, commandEnd = 0;
 	for (int i = 0; i < argc; i++)
 	{
 		// Checking if the command ended:
 		if (strncmp(args[i], "->", 2) == 0)
 		{
-			for (int j = 0; j < MAX_ARGS + 2; j++)
-			{
-				if (commandArgs[j] == NULL)
-					printf("NULL\n");
-				else
-				{
-					printf("%s\n", commandArgs[j]);
-				}
-			}
-			printf("oi!\n");
 			// Checking if there are too many commands:
 			commands++;
 			if (commands > MAX_COMMANDS)
@@ -79,16 +60,6 @@ void Controller_Execute(int argc, char *args[])
 			// Cleaning the command args buffer:
 			for (int j = 0; j < MAX_ARGS + 2; j++)
 				commandArgs[j] = NULL;
-			
-			for (int j = 0; j < MAX_ARGS + 2; j++)
-			{
-				if (commandArgs[j] == NULL)
-					printf("NULL\n");
-				else
-				{
-					printf("%s\n", commandArgs[j]);
-				}
-			}
 			// Getting the next token:
 			i++;
 			if(i >= argc) goto operator_error;
