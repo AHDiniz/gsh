@@ -36,16 +36,14 @@ void Controller_Execute(int argc, char *args[])
 	
 	// Command arguments' data:
 	char *commandArgs[MAX_ARGS + 2];
-	// commandArgs[MAX_ARGS + 1] = NULL;
 	// Initializing the command args buffer:
 	for (int j = 0; j <= MAX_ARGS; j++)
 		commandArgs[j] = NULL;
 	int commandInit = 0, commandEnd = 0;
-	// int internal = 0;
 	for (int i = 0; i < argc; i++)
 	{
 		// Checking if the command ended:
-		if (strncmp(args[i], "->", 2) == 0) // || strncmp(args[i], "\n", 1) == 0)
+		if (strncmp(args[i], "->", 2) == 0)
 		{
 			// Checking if there are too many commands:
 			commands++;
@@ -66,22 +64,13 @@ void Controller_Execute(int argc, char *args[])
 			continue;
 		}
 
-		// // Ignoring internal commands:
-		// if (strncmp(args[i], "exit", 4) == 0 || strncmp(args[i], "mywait", 6) == 0)
-		// {
-		// 	internal = 1;
-		// 	continue;
-		// }
-		// else
-		// {
-			// Checking if the position of the token in the command is valid:
-			int relativePos = commandEnd - commandInit;
-			if (relativePos <= MAX_ARGS)
-			{
-				commandArgs[relativePos] = args[i]; // Adding the argument to current command
-			}
-			commandEnd++;
-		// }
+		// Checking if the position of the token in the command is valid:
+		int relativePos = commandEnd - commandInit;
+		if (relativePos <= MAX_ARGS)
+		{
+			commandArgs[relativePos] = args[i]; // Adding the argument to current command
+		}
+		commandEnd++;
 	}
 	Controller_RunCmd(commandArgs, 1);
 
