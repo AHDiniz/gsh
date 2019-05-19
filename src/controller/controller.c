@@ -63,6 +63,7 @@ void Controller_Execute(int argc, char *args[])
 					printf("%s\n", commandArgs[j]);
 				}
 			}
+			printf("oi!\n");
 			// Checking if there are too many commands:
 			commands++;
 			if (commands > MAX_COMMANDS)
