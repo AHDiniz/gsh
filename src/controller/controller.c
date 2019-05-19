@@ -48,8 +48,8 @@ void Controller_Execute(int argc, char *args[])
 			// Checking if there are too many commands:
 			commands++;
 			if (commands > MAX_COMMANDS) goto command_error;
-
-			Controller_RunCmd(commandArgs, 1);
+			else 
+				Controller_RunCmd(commandArgs, 1);
 
 			// Cleaning the command args buffer:
 			for (int j = 0; j <= MAX_ARGS; j++)
