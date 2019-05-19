@@ -102,16 +102,16 @@ void GSH_ReadAndExecute()
 
 	// Iterating through the tokens:
 	int i = 0, commands = 1;
-	int commandInit = 0, commandEnd = 0; // Positions of the command's beggining and ending
+	// int commandInit = 0, commandEnd = 0; // Positions of the command's beggining and ending
 	// char *args[MAX_ARGS + 2];
 	// args[MAX_ARGS + 1] = NULL;
 	int internal = 0; // Tells if current command is an internal operation
 	while (tokens[i] != NULL && !internal)
 	{
 		// // Checking if is the same command:
-		// if (strncmp(tokens[i], "->", 2) == 0)
-		// {
-		// 	commands++; // There's a new command
+		if (strncmp(tokens[i], "->", 2) == 0)
+		{
+			commands++; // There's a new command
 			
 		// 	// Checking if the command limit wasn't broken:
 		// 	if (commands >= MAX_COMMANDS + 1) break;
@@ -120,11 +120,11 @@ void GSH_ReadAndExecute()
 		// 	for (int j = 0; j <= MAX_ARGS; j++)
 		// 		args[j] = " ";
 			
-		// 	// Getting the next token:
-		// 	i++;
+			// Getting the next token:
+			i++;
 		// 	commandInit = commandEnd = i; // Resetting the command limits
 		// 	continue;
-		// }
+		}
 
 		// If the current command is still the same:
 		// Checking if the command is an internal operation:
