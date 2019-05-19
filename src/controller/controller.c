@@ -62,7 +62,7 @@ void Controller_Execute(int argc, char *args[])
 			commandInit = commandEnd = i;
 			// Getting the next token:
 			// i++;
-			if(i >= argc) goto operator_error;
+			// if(i >= argc) goto operator_error;
 
 			continue;
 		}
@@ -88,9 +88,9 @@ static int Controller_RunCmd(char *args[], int fg)
 	pid_t pid = fork();
 	if (pid == 0)
 	{
-		const char *constArgs[MAX_ARGS + 2];
-		for (int i = 0; i < MAX_ARGS + 2; i++)
-			constArgs[i] = args[i];
+		// const char *constArgs[MAX_ARGS + 2];
+		// for (int i = 0; i < MAX_ARGS + 2; i++)
+		// 	constArgs[i] = args[i];
 		int success = execv(constArgs[0], constArgs);
 		if (success == -1) goto proc_error;
 	}
