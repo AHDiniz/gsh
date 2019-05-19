@@ -90,18 +90,6 @@ void Controller_Execute(int argc, char *args[])
 
 static int Controller_RunCmd(char *args[], int fg)
 {
-	for (int j = 0; ; j++)
-	{
-		if(args[j] == NULL)
-		{
-			printf("NULL\n");
-			break;
-		}
-		printf("%s\n", args[j]);
-	}
-
-	return 1;
-
 	pid_t pid = fork();
 	if (pid == 0)
 	{
