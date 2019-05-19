@@ -55,7 +55,7 @@ void Controller_Execute(int argc, char *args[])
 				// 	if (commandArgs[j] != NULL)
 				// 		printf("%s\n", commandArgs[j]);
 				// 	else printf("NULL\n");
-				Controller_RunCmd(commandArgs, 0);
+				Controller_RunCmd(commandArgs, 1);
 			}
 			// Cleaning the command args buffer:
 			for (int j = 0; j < MAX_ARGS + 1; j++)
@@ -88,6 +88,10 @@ void Controller_Execute(int argc, char *args[])
 
 static int Controller_RunCmd(char *args[], int fg)
 {
+	for (int j = 0; j < MAX_COMMANDS + 2; j++)
+		if (commandArgs[j] != NULL)
+			printf("%s\n", commandArgs[j]);
+		else printf("NULL\n");
 	pid_t pid = fork();
 	if (pid == 0)
 	{
