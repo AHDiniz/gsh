@@ -38,8 +38,8 @@ void Controller_Execute(char *args[])
 	char *commandArgs[MAX_ARGS + 2];
 	commandArgs[MAX_ARGS + 1] = NULL;
 	int commandInit = 0, commandEnd = 0;
-	int internal = 0;
-	for (int i = 1; args[i] != NULL; i++)
+	// int internal = 0;
+	for (int i = 0; args[i] != NULL; i++)
 	{
 		// Checking if the command ended:
 		if (strncmp(args[i], "->", 2) == 0 || strncmp(args[i], "\n", 1) == 0)
@@ -58,17 +58,18 @@ void Controller_Execute(char *args[])
 			commandInit = commandEnd = i;
 
 			// Getting the next token:
+			i++;
 			continue;
 		}
 
-		// Ignoring internal commands:
-		if (strncmp(args[i], "exit", 4) == 0 || strncmp(args[i], "mywait", 6) == 0)
-		{
-			internal = 1;
-			continue;
-		}
-		else
-		{
+		// // Ignoring internal commands:
+		// if (strncmp(args[i], "exit", 4) == 0 || strncmp(args[i], "mywait", 6) == 0)
+		// {
+		// 	internal = 1;
+		// 	continue;
+		// }
+		// else
+		// {
 			// Checking if the position of the token in the command is valid:
 			int relativePos = commandEnd - commandInit;
 			if (relativePos <= MAX_ARGS)
@@ -76,7 +77,7 @@ void Controller_Execute(char *args[])
 				commandArgs[relativePos] = args[i]; // Adding the argument to current command
 			}
 			commandEnd++;
-		}
+		// }
 	}
 }
 

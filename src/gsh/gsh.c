@@ -47,10 +47,10 @@ void Child_Handler()
 	printf("I got a SIGCHLD! XD\n");
 }
 
-void SIGUSR1_Handler()
-{
-	// printf("I got a SIGUSR1!\n");
-}
+// void SIGUSR1_Handler()
+// {
+// 	printf("I got a SIGUSR1!\n");
+// }
 
 /**
  * Defining function to execute a given command:
@@ -103,28 +103,28 @@ void GSH_ReadAndExecute()
 	// Iterating through the tokens:
 	int i = 0, commands = 1;
 	int commandInit = 0, commandEnd = 0; // Positions of the command's beggining and ending
-	char *args[MAX_ARGS + 2];
-	args[MAX_ARGS + 1] = NULL;
+	// char *args[MAX_ARGS + 2];
+	// args[MAX_ARGS + 1] = NULL;
 	int internal = 0; // Tells if current command is an internal operation
-	while (tokens[i] != NULL)
+	while (tokens[i] != NULL && !internal)
 	{
-		// Checking if is the same command:
-		if (strncmp(tokens[i], "->", 2) == 0)
-		{
-			commands++; // There's a new command
+		// // Checking if is the same command:
+		// if (strncmp(tokens[i], "->", 2) == 0)
+		// {
+		// 	commands++; // There's a new command
 			
-			// Checking if the command limit wasn't broken:
-			if (commands >= MAX_COMMANDS + 1) break;
+		// 	// Checking if the command limit wasn't broken:
+		// 	if (commands >= MAX_COMMANDS + 1) break;
 
-			// GSH_Execute(args); // Executing the current command
-			for (int j = 0; j <= MAX_ARGS; j++)
-				args[j] = " ";
+		// 	// GSH_Execute(args); // Executing the current command
+		// 	for (int j = 0; j <= MAX_ARGS; j++)
+		// 		args[j] = " ";
 			
-			// Getting the next token:
-			i++;
-			commandInit = commandEnd = i; // Resetting the command limits
-			continue;
-		}
+		// 	// Getting the next token:
+		// 	i++;
+		// 	commandInit = commandEnd = i; // Resetting the command limits
+		// 	continue;
+		// }
 
 		// If the current command is still the same:
 		// Checking if the command is an internal operation:
@@ -157,16 +157,16 @@ void GSH_ReadAndExecute()
 			}
 			
 		}
-		else
-		{
-			// Checking if the position of the token in the command is valid:
-			int relativePos = commandEnd - commandInit;
-			if (relativePos <= MAX_ARGS)
-			{
-				args[relativePos] = tokens[i]; // Adding the argument to current command
-			}
-			commandEnd++;
-		}
+		// else
+		// {
+		// 	// Checking if the position of the token in the command is valid:
+		// 	int relativePos = commandEnd - commandInit;
+		// 	if (relativePos <= MAX_ARGS)
+		// 	{
+		// 		args[relativePos] = tokens[i]; // Adding the argument to current command
+		// 	}
+		// 	commandEnd++;
+		// }
 
 		// Going to the next token:
 		i++;
@@ -209,35 +209,37 @@ static int GSH_Execute(char *args[])
 
 static int GSH_Controller(char *args[])
 {
-	signal(SIGUSR1, SIGUSR1_Handler);
+	// signal(SIGUSR1, SIGUSR1_Handler);
 
 	// Creating a child process that will control the requested programs:
 	pid_t pid = fork();
 
-	int count; // Amount of tokens in args
-	for (count = 0; args[count] != NULL; count++);
-	// Setting the arguments that will be passed on exec:
-	char **realArgs = malloc(sizeof(*realArgs) * count + 1);
+	// int count; // Amount of tokens in args
+	// for (count = 0; args[count] != NULL; count++);
+	// // Setting the arguments that will be passed on exec:
+	// char **realArgs = malloc(sizeof(*realArgs) * count + 1);
 	
 	// If it is the child:
 	if (pid == 0)
 	{
-		realArgs[0] = "./bin/controller";
-		for (int i = 1; i <= count; i++)
-			realArgs[i] = args[i - 1];
+		// realArgs[0] = "./bin/controller";
+		// for (int i = 1; i <= count; i++)
+		// 	realArgs[i] = args[i - 1];
 
 		// Executing the program:
-		int success = execv(realArgs[0], realArgs);
+		// int success = execv(realArgs[0], realArgs);
+		int success = execv("./bin/controller", args);
 		if (!success) goto proc_error;
 	}
 	else if (pid > 0)
 	{
-		waitpid(pid, NULL, 0);
+		// waitpid(pid, NULL, 0);
+		pause();
 		// printf("I am awake again! It worked?\n");
 	}
 	else goto proc_error;
 	
-	free(realArgs);
+	// free(realArgs);
 	return 1;
 
 	proc_error:
