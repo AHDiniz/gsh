@@ -130,10 +130,10 @@ void GSH_ReadAndExecute()
 		// Checking if the command is an internal operation:
 		if (strncmp(tokens[i], "exit", 4) == 0) // Exit command
 		{
+			internal = 1;
 			if (commands == 1 && GSH_Exit())
 			{
 				shell.isRunning = 0;
-				internal = 1;
 				break;
 			}
 			else
@@ -145,10 +145,10 @@ void GSH_ReadAndExecute()
 		}
 		else if (strncmp(tokens[i], "mywait", 6) == 0) // MyWait command
 		{
+			internal = 1;
 			if (commands == 1)
 			{
 				GSH_MyWait();
-				internal = 1;
 			}
 			else
 			{
