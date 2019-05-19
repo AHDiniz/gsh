@@ -47,10 +47,10 @@ void Child_Handler()
 	printf("I got a SIGCHLD! XD\n");
 }
 
-// void SIGUSR1_Handler()
-// {
-// 	printf("I got a SIGUSR1!\n");
-// }
+void SIGUSR1_Handler()
+{
+	printf("I got a SIGUSR1!\n");
+}
 
 /**
  * Defining function to execute a given command:
@@ -189,7 +189,7 @@ static int GSH_Execute(char *args[])
 
 static int GSH_Controller(char *args[])
 {
-	// signal(SIGUSR1, SIGUSR1_Handler);
+	signal(SIGUSR1, SIGUSR1_Handler);
 
 	// Creating a child process that will control the requested programs:
 	pid_t pid = fork();
