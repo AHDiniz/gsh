@@ -56,12 +56,13 @@ void Controller_Execute(int argc, char *args[])
 			for (int j = 0; j < MAX_ARGS + 2; j++)
 				commandArgs[j] = NULL;
 			
-			// Resetting the command limits:
-			commandInit = commandEnd = i;
-
 			// Getting the next token:
 			i++;
 			if(i >= argc) goto operator_error;
+
+			// Resetting the command limits:
+			commandInit = commandEnd = i;
+
 			continue;
 		}
 
