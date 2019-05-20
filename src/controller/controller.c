@@ -19,6 +19,29 @@
 #define MAX_COMMANDS 5
 #define MAX_ARGS     3
 
+pid_t fore;
+pid_t back = 0;
+
+// Defining signal handlers:
+
+void SIGTERM_Handler()
+{
+	if(!back)
+	{
+		kill(-back,SIGTERM);
+	}
+	raise(SIGKILL);
+}
+
+void SIGTSTP_Handler()
+{
+	if(!back)
+	{
+		kill(-back,SIGTSTP);
+	}
+	raise(SIGSTOP);
+}
+
 /**
  * Running a command with the given arguments:
  * 
@@ -87,6 +110,10 @@ static int Controller_RunCmd(char *args[], int fg)
 		// for (int i = 0; i < MAX_ARGS + 2; i++)
 		// 	constArgs[i] = args[i];
 		// int success = execv(constArgs[0], constArgs);
+		if(fg > 0)
+		{
+			setpgid(0,back);
+		}
 
 		// Try to execute command:
 		int success = execv(args[0], args);
@@ -94,6 +121,14 @@ static int Controller_RunCmd(char *args[], int fg)
 	}
 	else if (pid > 0)
 	{
+		if(!fg) // foreground program
+		{
+			fore = pid;
+		}
+		else if(fg == 1) // first background program
+		{
+			back = pid;
+		}
 		waitpid(pid, NULL, 0);
 	}
 	else goto proc_error;

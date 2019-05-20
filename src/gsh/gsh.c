@@ -25,7 +25,7 @@
 struct gsh
 {
 	int isRunning;
-	int childs, zombies;
+	int childs;
 };
 
 struct gsh shell;
@@ -33,6 +33,23 @@ struct gsh shell;
 // Defining signal handlers:
 
 void SIGUSR1_Handler() {}
+
+void SIGCHLD_Handler()
+{
+	shell.childs -= 1;
+}
+
+void SIGINT_Handler()
+{
+	if(shell.childs)
+	{
+		fprintf(stderr, "OOPS :O... Looks like i still have childs alive so i can't die. (So responsible! :D)\n");
+	}
+	else
+	{
+		kill(0,SIGTERM);
+	}
+}
 
 /**
  * Defining function to execute the program creator/controller program:
@@ -50,7 +67,7 @@ int GSH_Init()
 	printf("Welcome to gsh: the Linux Group SHell :D\n");
 	printf("Written by Alan Diniz, Rafael Belmock and Israel Santos.\n\n");
 	
-	shell.childs = shell.zombies = 0;
+	shell.childs = 0;
 	shell.isRunning = 1; // The shell is now running
 	
 	return 1;
@@ -143,6 +160,8 @@ static int GSH_Controller(char *args[])
 {
 	signal(SIGUSR1, SIGUSR1_Handler);
 
+	shell.childs += 1;
+
 	// Creating a child process that will control the requested programs:
 	pid_t pid = fork();
 
@@ -162,5 +181,5 @@ static int GSH_Controller(char *args[])
 
 	proc_error:
 	fprintf(stderr, "OOPS :O... Looks like there was an error while trying to execute the given commands.\n");
-	return 0;
+	exit(1);
 }
