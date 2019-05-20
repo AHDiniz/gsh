@@ -47,8 +47,13 @@ void SIGINT_Handler()
 	}
 	else
 	{
-		kill(0,SIGTERM);
+		raise(SIGKILL);
 	}
+}
+
+void SIGTSTP_Handler()
+{
+	kill(0,SIGTSTP);
 }
 
 /**
@@ -69,6 +74,8 @@ int GSH_Init()
 	
 	shell.childs = 0;
 	shell.isRunning = 1; // The shell is now running
+
+	setpgid(0,0); // The shell is lider of a new group
 	
 	return 1;
 

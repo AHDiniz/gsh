@@ -30,7 +30,7 @@ void SIGTERM_Handler()
 	{
 		kill(-back,SIGTERM);
 	}
-	raise(SIGKILL);
+	exit(0);
 }
 
 void SIGTSTP_Handler()

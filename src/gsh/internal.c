@@ -14,6 +14,7 @@
 
 int GSH_Exit()
 {
+	kill(0,SIGTERM);
 	return 1;
 }
 
