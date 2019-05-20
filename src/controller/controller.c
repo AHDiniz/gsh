@@ -23,7 +23,7 @@
  * Running a command with the given arguments:
  * 
  * Inputs: the command arguments and a flag that tells if it should
- * run in the background or in the foreground.
+ * run in the background or in the foreground (0 for foreground).
  * 
  * Output: bool like int that tells if the program was executed
  * successfully
@@ -33,6 +33,7 @@ static int Controller_RunCmd(char *args[], int fg);
 void Controller_Execute(int argc, char *args[])
 {
 	int commands = 1; // Amount of commands in the input
+	int ccmd = 0; // Current command being executed
 	
 	// Command arguments' data:
 	char *commandArgs[MAX_ARGS + 2];
@@ -45,7 +46,7 @@ void Controller_Execute(int argc, char *args[])
 		// Checking if the command ended:
 		if (strncmp(args[i], "->", 2) == 0)
 		{
-			Controller_RunCmd(commandArgs, 1);
+			Controller_RunCmd(commandArgs, ccmd++);
 
 			// Checking if there are too many commands:
 			commands++;
@@ -69,7 +70,7 @@ void Controller_Execute(int argc, char *args[])
 		}
 		commandEnd++;
 	}
-	if (commandArgs[0] != NULL) Controller_RunCmd(commandArgs, 0);
+	if (commandArgs[0] != NULL) Controller_RunCmd(commandArgs, ccmd++);
 
 	return;
 
@@ -86,6 +87,8 @@ static int Controller_RunCmd(char *args[], int fg)
 		// for (int i = 0; i < MAX_ARGS + 2; i++)
 		// 	constArgs[i] = args[i];
 		// int success = execv(constArgs[0], constArgs);
+
+		// Try to execute command:
 		int success = execv(args[0], args);
 		if (success == -1) goto proc_error;
 	}

@@ -84,6 +84,7 @@ void GSH_ReadAndExecute()
 		{
 			// Getting the next token:
 			i++;
+			// Cheking if there is a identation error:
 			if(tokens[i] == NULL)
 			{
 				fprintf(stderr, "OOPS :O... missing second argument of operator ->.\n");
