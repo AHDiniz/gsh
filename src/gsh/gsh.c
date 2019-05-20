@@ -35,15 +35,6 @@ struct gsh shell;
 void SIGUSR1_Handler() {}
 
 /**
- * Defining function to execute a given command:
- * 
- * Inputs: all the program arguments: the executable and it's args (max. 3)
- * 
- * Output: bool like int that tells if the operation was a success
-*/
-static int GSH_Execute(char *args[]);
-
-/**
  * Defining function to execute the program creator/controller program:
  * 
  * Inputs: all the line arguments that where cought in the user input.
@@ -93,6 +84,11 @@ void GSH_ReadAndExecute()
 		{
 			// Getting the next token:
 			i++;
+			if(tokens[i] == NULL)
+			{
+				fprintf(stderr, "OOPS :O... missing second argument of operator ->.\n");
+				break;
+			}
 		}
 
 		// If the current command is still the same:
@@ -140,30 +136,6 @@ void GSH_ReadAndExecute()
 void GSH_Finish()
 {
 	// Use this to free memory if necessary
-}
-
-static int GSH_Execute(char *args[])
-{
-	pid_t pid = fork();
-	if (pid == 0) // Child process
-	{
-		// Executing the program:
-		int success = execv(args[0], args);
-		if (success == -1) goto proc_error;
-	}
-	else if (pid > 0) // Parent
-	{
-		sleep(10);
-		kill(pid,SIGINT);
-		waitpid(pid, NULL, 0);
-	}
-	else goto proc_error;
-	
-	return 1;
-
-	proc_error:
-	fprintf(stderr, "OOPS :O... Looks like there was an error while trying to execute %s.\n", args[0]);
-	return 0;
 }
 
 static int GSH_Controller(char *args[])

@@ -45,14 +45,11 @@ void Controller_Execute(int argc, char *args[])
 		// Checking if the command ended:
 		if (strncmp(args[i], "->", 2) == 0)
 		{
+			Controller_RunCmd(commandArgs, 1);
+
 			// Checking if there are too many commands:
 			commands++;
-			if (commands > MAX_COMMANDS)
-			{
-				Controller_RunCmd(commandArgs, 1);
-			}
-
-			Controller_RunCmd(commandArgs, 1);
+			if (commands > MAX_COMMANDS) goto command_error;
 
 			// Cleaning the command args buffer:
 			for (int j = 0; j < MAX_ARGS + 1; j++)
@@ -61,9 +58,6 @@ void Controller_Execute(int argc, char *args[])
 			// Resetting the command limits:
 			commandInit = commandEnd = i;
 			// Getting the next token:
-			// i++;
-			// if(i >= argc) goto operator_error;
-
 			continue;
 		}
 
@@ -79,8 +73,8 @@ void Controller_Execute(int argc, char *args[])
 
 	return;
 
-	operator_error:
-	fprintf(stderr, "OOPS :O... missing second argument of operator ->.\n");
+	command_error:
+	fprintf(stderr, "OOPS :O... max number of commands reached.\n");
 }
 
 static int Controller_RunCmd(char *args[], int fg)
