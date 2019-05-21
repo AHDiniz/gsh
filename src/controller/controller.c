@@ -26,19 +26,13 @@ pid_t back = 0;
 
 void SIGTERM_Handler()
 {
-	if(!back)
-	{
-		kill(-back,SIGTERM);
-	}
+	if(!back) kill(-back,SIGTERM);
 	exit(0);
 }
 
 void SIGTSTP_Handler()
 {
-	if(!back)
-	{
-		kill(-back,SIGTSTP);
-	}
+	if(!back) kill(-back,SIGTSTP);
 	raise(SIGSTOP);
 }
 
@@ -95,6 +89,23 @@ void Controller_Execute(int argc, char *args[])
 	}
 	if (commandArgs[0] != NULL) Controller_RunCmd(commandArgs, ccmd++);
 
+	// Waiting for a child to end it's execution:
+	for (int i = 0; i < 2; i++)
+	{
+		pid_t pid;
+		pid = waitpid(-1, NULL, 0);
+		
+		// If it's the foreground process that ended:
+		if (pid == fore) kill(getppid(), SIGUSR1); // Send signal to the shell
+		else // If it's one of the background program's that ended:
+		{
+			// Kill every other process in the background group:
+			kill(-back, SIGKILL);
+			for (int j = 0; j < ccmd - 2; j++)
+				waitpid(-1, NULL, WNOHANG);
+		}
+	}
+
 	return;
 
 	command_error:
@@ -104,34 +115,27 @@ void Controller_Execute(int argc, char *args[])
 static int Controller_RunCmd(char *args[], int fg)
 {
 	pid_t pid = fork();
-	if (pid == 0)
+	if (pid == 0) // If it's the child process...
 	{
-		// const char *constArgs[MAX_ARGS + 2];
-		// for (int i = 0; i < MAX_ARGS + 2; i++)
-		// 	constArgs[i] = args[i];
-		// int success = execv(constArgs[0], constArgs);
-		if(fg > 0)
-		{
-			setpgid(0,back);
-		}
+		/*
+			Setting the program to be in the background
+			if it's not the first command:
+		*/
+		if(fg > 0) setpgid(0,back);
 
-		// Try to execute command:
+		// Trying to execute command:
 		int success = execv(args[0], args);
 		if (success == -1) goto proc_error;
 	}
-	else if (pid > 0)
+	else if (pid > 0) // Id it's the father process...
 	{
-		if(!fg) // foreground program
-		{
+		if(!fg) // Foreground program
 			fore = pid;
-		}
-		else if(fg == 1) // first background program
-		{
+		else if(fg == 1) // First background program
 			back = pid;
-		}
 		waitpid(pid, NULL, 0);
 	}
-	else goto proc_error;
+	else goto proc_error; // If there was an error, treat it
 
 	return 1;
 
