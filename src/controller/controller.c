@@ -114,7 +114,7 @@ void Controller_Execute(int argc, char *args[])
 
 static int Controller_RunCmd(char *args[], int fg)
 {
-	pid_t pid = fork();
+	pid_t pid = fork(); // Creating a new process
 	if (pid == 0) // If it's the child process...
 	{
 		/*
