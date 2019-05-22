@@ -83,6 +83,7 @@ int GSH_Init()
 	signal(SIGINT, SIGINT_Handler);
 	signal(SIGTSTP, SIGTSTP_Handler);
 	signal(SIGUSR1, SIGUSR1_Handler);
+	signal(SIGCHLD, SIGCHLD_Handler);
 	
 	return 1;
 
