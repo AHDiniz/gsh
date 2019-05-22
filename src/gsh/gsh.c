@@ -76,12 +76,19 @@ int GSH_Init()
 	shell.isRunning = 1; // The shell is now running
 
 	setpgid(0,0); // The shell is lider of a new group
+
+	// Setting shell's group as the foreground group of it's section:
+	if(tcsetpgrp(STDOUT_FILENO, getpid() == -1) goto init_error;
+
+	signal(SIGINT, SIGINT_Handler);
+	signal(SIGTSTP, SIGTSTP_Handler);
+	signal(SIGUSR1, SIGUSR1_Handler);
 	
 	return 1;
 
-	// init_error:
-	// fprintf(stderr, "OOPS :O... Looks like there was an initialization error.\n");
-	// return 0;
+	init_error:
+	fprintf(stderr, "OOPS :O... Looks like there was an initialization error.\n");
+	return 0;
 }
 
 int GSH_IsRunning()
@@ -165,8 +172,6 @@ void GSH_Finish()
 
 static int GSH_Controller(char *args[])
 {
-	signal(SIGUSR1, SIGUSR1_Handler);
-
 	shell.childs += 1;
 
 	// Creating a child process that will control the requested programs:

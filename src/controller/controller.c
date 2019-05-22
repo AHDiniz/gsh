@@ -19,8 +19,8 @@
 #define MAX_COMMANDS 5
 #define MAX_ARGS     3
 
-pid_t fore;
-pid_t back = 0;
+pid_t fore; // foreground program pid
+pid_t back = 0; // background group pid
 
 // Defining signal handlers:
 
@@ -49,6 +49,10 @@ static int Controller_RunCmd(char *args[], int fg);
 
 void Controller_Execute(int argc, char *args[])
 {
+	signal(SIGINT, SIG_IGN);
+	signal(SIGTERM, SIGTERM_Handler);
+	signal(SIGTSTP, SIGTSTP_Handler);
+
 	int commands = 1; // Amount of commands in the input
 	int ccmd = 0; // Current command being executed
 	
@@ -89,11 +93,12 @@ void Controller_Execute(int argc, char *args[])
 	}
 	if (commandArgs[0] != NULL) Controller_RunCmd(commandArgs, ccmd++);
 
-	// Waiting for a child to end it's execution:
+	// Waiting for all childs to end it's execution:
 	for (int i = 0; i < 2; i++)
 	{
 		pid_t pid;
 		pid = waitpid(-1, NULL, 0);
+		if(pid == -1) goto wait_error;
 		
 		// If it's the foreground process that ended:
 		if (pid == fore) kill(getppid(), SIGUSR1); // Send signal to the shell
@@ -101,6 +106,7 @@ void Controller_Execute(int argc, char *args[])
 		{
 			// Kill every other process in the background group:
 			kill(-back, SIGKILL);
+			// Cleaning zombies:
 			for (int j = 0; j < ccmd - 2; j++)
 				waitpid(-1, NULL, WNOHANG);
 		}
@@ -110,6 +116,11 @@ void Controller_Execute(int argc, char *args[])
 
 	command_error:
 	fprintf(stderr, "OOPS :O... max number of commands reached.\n");
+
+	return;
+
+	wait_error:
+	fprintf(stderr, "OOPS :O... Looks like there was a error while waiting for childs to terminate.\n");
 }
 
 static int Controller_RunCmd(char *args[], int fg)
@@ -133,7 +144,7 @@ static int Controller_RunCmd(char *args[], int fg)
 			fore = pid;
 		else if(fg == 1) // First background program
 			back = pid;
-		waitpid(pid, NULL, 0);
+		// waitpid(pid, NULL, 0);
 	}
 	else goto proc_error; // If there was an error, treat it
 
