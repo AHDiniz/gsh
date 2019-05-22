@@ -105,7 +105,7 @@ void Controller_Execute(int argc, char *args[])
 		else // If it's one of the background program's that ended:
 		{
 			// Kill every other process in the background group:
-			kill(-back, SIGKILL);
+			kill(-back, SIGTERM);
 			// Cleaning zombies:
 			for (int j = 0; j < ccmd - 2; j++)
 				waitpid(-1, NULL, WNOHANG);
