@@ -12,7 +12,7 @@ CONT = bin/controller # Auxiliar program file name
 # If the config flag is not set, set it to "debug":
 ifeq ($(config),)
 
-config = debug
+config = release
 
 endif
 
