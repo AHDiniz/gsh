@@ -26,7 +26,7 @@ struct gsh
 {
 	int isRunning;
 	int childs;
-	sigset_t newmask;
+	// sigset_t newmask;
 };
 
 struct gsh shell;
@@ -79,11 +79,11 @@ int GSH_Init()
 	setpgid(0,0); // The shell is lider of a new group
 
 	// Setting a mask to block SIGTTOU:
-	if ((sigemptyset(&(shell.newmask)) == -1) ||
-		(sigaddset(&(shell.newmask), SIGTTOU) == -1))
-			goto init_error;
-	else if (sigprocmask(SIG_BLOCK, &(shell.newmask),NULL) == -1)
-		goto init_error;
+	// if ((sigemptyset(&(shell.newmask)) == -1) ||
+	// 	(sigaddset(&(shell.newmask), SIGTTOU) == -1))
+	// 		goto init_error;
+	// else if (sigprocmask(SIG_BLOCK, &(shell.newmask),NULL) == -1)
+	// 	goto init_error;
 
 	// Setting shell's group as the foreground group of it's section:
 	// if(tcsetpgrp(STDOUT_FILENO, getpid() == -1)) goto init_error;
@@ -95,9 +95,9 @@ int GSH_Init()
 	
 	return 1;
 
-	init_error:
-	fprintf(stderr, "OOPS :O... Looks like there was an initialization error.\n");
-	return 0;
+	// init_error:
+	// fprintf(stderr, "OOPS :O... Looks like there was an initialization error.\n");
+	// return 0;
 }
 
 int GSH_IsRunning()
