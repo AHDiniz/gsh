@@ -3,10 +3,11 @@
  * 
  * Alan Herculano Diniz, Rafael Belmock Pedruzzi & Israel Santos
  * 
- * controller.c: implementing the process controller functionalities
+ * controller.c: this program will execute the commands to
+ * create and execute the programs requested by the user.
 */
 
-#include "controller.h"
+// #include "controller.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,12 +27,14 @@ pid_t back = 0; // background group pid
 
 // Defining signal handlers:
 
+// Used when called exit to terminate all children:
 void SIGTERM_Handler()
 {
 	if(!back) kill(-back,SIGTERM);
 	exit(0);
 }
 
+// Used when called mywait to stop all children:
 void SIGTSTP_Handler()
 {
 	if(!back) kill(-back,SIGTSTP);
@@ -49,7 +52,11 @@ void SIGTSTP_Handler()
 */
 static int Controller_RunCmd(char *args[], int fg);
 
-void Controller_Execute(int argc, char *args[])
+/**
+ * argv will contain all the command line tokens that where
+ * cought by the shell, and will be used to execute the programs
+*/
+int main(int argc, char *args[])
 {
 	signal(SIGINT, SIG_IGN);
 	signal(SIGTERM, SIGTERM_Handler);
@@ -114,15 +121,17 @@ void Controller_Execute(int argc, char *args[])
 		}
 	}
 
-	return;
+	return 0;
 
 	command_error:
 	fprintf(stderr, "OOPS :O... max number of commands reached.\n");
 
-	return;
+	return 1;
 
 	wait_error:
 	fprintf(stderr, "OOPS :O... Looks like there was a error while waiting for childs to terminate.\n");
+
+	return 1;
 }
 
 static int Controller_RunCmd(char *args[], int fg)

@@ -6,7 +6,6 @@
 
 CC = gcc # Project's compiler
 INC_GSH = -Iinclude/gsh # Include path (no need to specify the path of header in #include)
-INC_CONT = -Iinclude/controller # Include path of the controller program
 GSH = bin/gsh # Executable file name
 CONT = bin/controller # Auxiliar program file name
 
@@ -38,4 +37,4 @@ gsh: controller
 	$(CC) -o $(GSH) $(wildcard src/gsh/*.c) $(INC_GSH) $(CMP_FLAGS) $(C_FLAGS)
 
 controller:
-	$(CC) -o $(CONT) $(wildcard src/controller/*.c) $(CMP_FLAGS) $(INC_CONT) $(C_FLAGS)
+	$(CC) -o $(CONT) $(wildcard src/controller/*.c) $(CMP_FLAGS) $(C_FLAGS)
