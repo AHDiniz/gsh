@@ -132,7 +132,17 @@ static int Controller_RunCmd(char *args[], int fg)
 			Setting the program to be in the background
 			if it's not the first command:
 		*/
-		if(fg > 0) setpgid(0,back);
+		if(fg > 0)
+		{
+			setpgid(0,back);
+			int fd = open("/dev/null",O_RDWR);
+    		if(fd == -1) goto proc_error;
+    		dup2(fd,0);
+    		dup2(fd,1);
+    		dup2(fd,2);
+    		if (fd > 2)
+    		    close(fd);
+		}
 
 		// Trying to execute command:
 		int success = execv(args[0], args);
