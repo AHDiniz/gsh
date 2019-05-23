@@ -22,9 +22,9 @@
 */
 int main(int argc, char *argv[])
 {
-	#ifdef GSH_DEBUG
-		printf("Entered in the process creator.\n");
-	#endif
+	// #ifdef GSH_DEBUG
+	// 	printf("Entered in the process creator.\n");
+	// #endif
 
 	Controller_Execute(argc, argv);
 

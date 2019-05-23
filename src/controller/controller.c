@@ -94,7 +94,7 @@ void Controller_Execute(int argc, char *args[])
 	if (commandArgs[0] != NULL) Controller_RunCmd(commandArgs, ccmd++);
 
 	// Waiting for all childs to end it's execution:
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < back==0 ? 1 : 2; i++)
 	{
 		pid_t pid;
 		pid = waitpid(-1, NULL, 0);
