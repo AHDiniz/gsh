@@ -15,6 +15,8 @@
 #include <signal.h>
 #include <sys/wait.h>
 #include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #define MAX_COMMANDS 5
 #define MAX_ARGS     3
