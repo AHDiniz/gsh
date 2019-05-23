@@ -86,7 +86,7 @@ int GSH_Init()
 		goto init_error;
 
 	// Setting shell's group as the foreground group of it's section:
-	if(tcsetpgrp(STDOUT_FILENO, getpid() == -1)) goto init_error;
+	// if(tcsetpgrp(STDOUT_FILENO, getpid() == -1)) goto init_error;
 
 	signal(SIGINT, SIGINT_Handler);
 	signal(SIGTSTP, SIGTSTP_Handler);
