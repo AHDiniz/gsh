@@ -59,8 +59,10 @@ void SIGINT_Handler()
 // Ctrl + z handler:
 void SIGTSTP_Handler()
 {
+	signal(SIGTSTP,SIG_IGN);
 	// Stopping all children:
 	kill(0,SIGTSTP);
+	signal(SIGTSTP,SIGTSTP_Handler);
 }
 
 /**
