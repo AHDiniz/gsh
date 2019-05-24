@@ -49,6 +49,7 @@ void SIGINT_Handler()
 	if(shell.childs)
 	{
 		fprintf(stderr, "\nOOPS :O... Looks like i still have childs alive so i can't die. (So responsible! :D)\n");
+		printf("gsh> ");
 	}
 	else
 	{
