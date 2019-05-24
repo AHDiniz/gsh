@@ -33,15 +33,19 @@ struct gsh shell;
 
 // Defining signal handlers:
 
+// Used to awake the shell when the foreground program terminates:
 void SIGUSR1_Handler() {}
 
+// Used to controll the number of alive children:
 void SIGCHLD_Handler()
 {
 	shell.childs -= 1;
 }
 
+// Ctrl + c handler:
 void SIGINT_Handler()
 {
+	// Ctrl + c only works if there are no living children:
 	if(shell.childs)
 	{
 		fprintf(stderr, "OOPS :O... Looks like i still have childs alive so i can't die. (So responsible! :D)\n");
@@ -52,8 +56,10 @@ void SIGINT_Handler()
 	}
 }
 
+// Ctrl + z handler:
 void SIGTSTP_Handler()
 {
+	// Stopping all children:
 	kill(0,SIGTSTP);
 }
 
@@ -78,26 +84,12 @@ int GSH_Init()
 
 	setpgid(0,0); // The shell is lider of a new group
 
-	// Setting a mask to block SIGTTOU:
-	// if ((sigemptyset(&(shell.newmask)) == -1) ||
-	// 	(sigaddset(&(shell.newmask), SIGTTOU) == -1))
-	// 		goto init_error;
-	// else if (sigprocmask(SIG_BLOCK, &(shell.newmask),NULL) == -1)
-	// 	goto init_error;
-
-	// Setting shell's group as the foreground group of it's section:
-	// if(tcsetpgrp(STDOUT_FILENO, getpid() == -1)) goto init_error;
-
 	signal(SIGINT, SIGINT_Handler);
 	signal(SIGTSTP, SIGTSTP_Handler);
 	signal(SIGUSR1, SIGUSR1_Handler);
 	signal(SIGCHLD, SIGCHLD_Handler);
 	
 	return 1;
-
-	// init_error:
-	// fprintf(stderr, "OOPS :O... Looks like there was an initialization error.\n");
-	// return 0;
 }
 
 int GSH_IsRunning()
@@ -183,6 +175,12 @@ static int GSH_Controller(char *args[])
 {
 	shell.childs += 1;
 
+	// Creating a mask to block SIGUSR1:
+	sigset_t newmask, oldmask;
+	sigemptyset(&newmask);
+	sigaddset(&newmask, SIGUSR1);
+	sigprocmask(SIG_BLOCK, &newmask, &oldmask);
+
 	// Creating a child process that will control the requested programs:
 	pid_t pid = fork();
 
@@ -194,7 +192,9 @@ static int GSH_Controller(char *args[])
 	}
 	else if (pid > 0)
 	{
-		pause();
+		// Waiting for the termination of the foreground process:
+		sigsuspend(&oldmask);
+		sigprocmask(SIG_SETMASK, &oldmask, NULL);
 	}
 	else goto proc_error;
 	

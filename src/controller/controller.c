@@ -110,7 +110,7 @@ int main(int argc, char *args[])
 		if(pid == -1) goto wait_error;
 		
 		// If it's the foreground process that ended:
-		if (pid == fore) kill(getppid(), SIGUSR1); // Send signal to the shell
+		if (pid == fore) kill(getppid(), SIGUSR1); // Wake up the shell
 		else // If it's one of the background program's that ended:
 		{
 			// Kill every other process in the background group:
