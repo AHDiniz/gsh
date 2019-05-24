@@ -58,11 +58,11 @@ void SIGINT_Handler()
 }
 
 // Ctrl + z handler:
-void SIGTSTP_Handler()
-{
-	// Stopping all children:
-	kill(0,SIGTSTP);
-}
+// void SIGTSTP_Handler()
+// {
+// 	// Stopping all children:
+// 	kill(0,SIGTSTP);
+// }
 
 /**
  * Defining function to execute the program creator/controller program:
@@ -86,7 +86,7 @@ int GSH_Init()
 	setpgid(0,0); // The shell is lider of a new group
 
 	signal(SIGINT, SIGINT_Handler);
-	signal(SIGTSTP, SIGTSTP_Handler);
+	signal(SIGTSTP, SIG_IGN);
 	signal(SIGUSR1, SIGUSR1_Handler);
 	signal(SIGCHLD, SIGCHLD_Handler);
 	
