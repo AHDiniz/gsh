@@ -58,7 +58,6 @@ static int Controller_RunCmd(char *args[], int fg);
 */
 int main(int argc, char *args[])
 {
-	signal(SIGINT, SIG_IGN);
 	signal(SIGTERM, SIGTERM_Handler);
 	signal(SIGTSTP, SIGTSTP_Handler);
 

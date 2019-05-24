@@ -49,7 +49,6 @@ void SIGINT_Handler()
 	if(shell.childs)
 	{
 		fprintf(stderr, "\nOOPS :O... Looks like i still have childs alive so i can't die. (So responsible! :D)\n");
-		fprintf(stderr, "gsh> ");
 	}
 	else
 	{
@@ -177,6 +176,9 @@ static int GSH_Controller(char *args[])
 {
 	shell.childs += 1;
 
+	// Protecting the shell of being interrupted while waiting for the foreground process:
+	signal(SIGINT, SIG_IGN);
+
 	// Creating a mask to block SIGUSR1:
 	sigset_t newmask, oldmask;
 	sigemptyset(&newmask);
@@ -196,7 +198,9 @@ static int GSH_Controller(char *args[])
 	{
 		// Waiting for the termination of the foreground process:
 		sigsuspend(&oldmask);
+		// Restoring old signal mask and handlers:
 		sigprocmask(SIG_SETMASK, &oldmask, NULL);
+		signal(SIGINT, SIGINT_Handler);
 	}
 	else goto proc_error;
 	
