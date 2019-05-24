@@ -36,6 +36,10 @@ struct gsh shell;
 // Used to awake the shell when the foreground program terminates:
 void SIGUSR1_Handler() {}
 
+// Ctrl + z handler:
+// Shell's children (controller) are in the same group as gsh and will redirect ctrl + z to it's grandchildren.
+void SIGTSTP_Handler() {}
+
 // Used to controll the number of alive children:
 void SIGCHLD_Handler()
 {
@@ -79,7 +83,7 @@ int GSH_Init()
 	setpgid(0,0); // The shell is lider of a new group
 
 	signal(SIGINT, SIGINT_Handler);
-	signal(SIGTSTP, SIG_IGN); // Shell's children (controller) are in the same group as gsh and will redirect ctrl + z to it's grandchildren.
+	signal(SIGTSTP, SIGTSTP_Handler);
 	signal(SIGUSR1, SIGUSR1_Handler);
 	signal(SIGCHLD, SIGCHLD_Handler);
 	
