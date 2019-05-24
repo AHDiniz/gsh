@@ -34,9 +34,10 @@ void SIGTERM_Handler()
 	exit(0);
 }
 
-// Used when called mywait to stop all children:
+// Ctrl + z handler:
 void SIGTSTP_Handler()
 {
+	// Redirecting this signal to the background processes: (Foreground children are in the same group of gsh and altomatically receive it)
 	if(!back) kill(-back,SIGTSTP);
 	raise(SIGSTOP);
 }
@@ -101,7 +102,7 @@ int main(int argc, char *args[])
 	}
 	if (commandArgs[0] != NULL) Controller_RunCmd(commandArgs, ccmd++);
 
-	// Waiting for all childs to end it's execution:
+	// Waiting for all children to end it's execution:
 	for (int i = 0; i < (back==0 ? 1 : 2); i++)
 	{
 		pid_t pid;
@@ -128,7 +129,7 @@ int main(int argc, char *args[])
 	return 1;
 
 	wait_error:
-	fprintf(stderr, "OOPS :O... Looks like there was a error while waiting for childs to terminate.\n");
+	fprintf(stderr, "OOPS :O... Looks like there was a error while waiting for children to terminate.\n");
 
 	return 1;
 }
@@ -164,7 +165,6 @@ static int Controller_RunCmd(char *args[], int fg)
 			fore = pid;
 		else if(fg == 1) // First background program
 			back = pid;
-		// waitpid(pid, NULL, 0);
 	}
 	else goto proc_error; // If there was an error, treat it
 

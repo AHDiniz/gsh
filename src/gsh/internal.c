@@ -11,9 +11,11 @@
 #include <stdio.h>
 #include <wait.h>
 #include <sys/types.h>
+#include <signal.h>
 
 int GSH_Exit()
 {
+	// Killing all children: (That looks kinda dark... O.O)
 	kill(0,SIGTERM);
 	return 1;
 }

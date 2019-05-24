@@ -25,7 +25,7 @@
 struct gsh
 {
 	int isRunning;
-	int childs;
+	int children;
 	// sigset_t newmask;
 };
 
@@ -39,16 +39,16 @@ void SIGUSR1_Handler() {}
 // Used to controll the number of alive children:
 void SIGCHLD_Handler()
 {
-	shell.childs -= 1;
+	shell.children -= 1;
 }
 
 // Ctrl + c handler:
 void SIGINT_Handler()
 {
 	// Ctrl + c only works if there are no living children:
-	if(shell.childs)
+	if(shell.children)
 	{
-		fprintf(stderr, "\nOOPS :O... Looks like i still have childs alive so i can't die. (So responsible! :D)\n");
+		fprintf(stderr, "\nOOPS :O... Looks like i still have children alive so i can't die. (So responsible! :D)\n");
 		printf("gsh> ");
 	}
 	else
@@ -56,13 +56,6 @@ void SIGINT_Handler()
 		raise(SIGKILL);
 	}
 }
-
-// Ctrl + z handler:
-// void SIGTSTP_Handler()
-// {
-// 	// Stopping all children:
-// 	kill(0,SIGTSTP);
-// }
 
 /**
  * Defining function to execute the program creator/controller program:
@@ -80,13 +73,13 @@ int GSH_Init()
 	printf("Welcome to gsh: the Linux Group SHell :D\n");
 	printf("Written by Alan Diniz, Rafael Belmock and Israel Santos.\n\n");
 	
-	shell.childs = 0;
+	shell.children = 0;
 	shell.isRunning = 1; // The shell is now running
 
 	setpgid(0,0); // The shell is lider of a new group
 
 	signal(SIGINT, SIGINT_Handler);
-	signal(SIGTSTP, SIG_IGN);
+	signal(SIGTSTP, SIG_IGN); // Shell's children (controller) are in the same group as gsh and will redirect ctrl + z to it's grandchildren.
 	signal(SIGUSR1, SIGUSR1_Handler);
 	signal(SIGCHLD, SIGCHLD_Handler);
 	
@@ -168,14 +161,9 @@ void GSH_ReadAndExecute()
 	free(line);
 }
 
-void GSH_Finish()
-{
-	// Use this to free memory if necessary
-}
-
 static int GSH_Controller(char *args[])
 {
-	shell.childs += 1;
+	shell.children += 1;
 
 	// Protecting the shell of being interrupted while waiting for the foreground process:
 	signal(SIGINT, SIG_IGN);

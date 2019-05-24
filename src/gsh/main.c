@@ -24,7 +24,5 @@ int main()
 		GSH_ReadAndExecute(); // Read the commands and executing them
 	}
 
-	GSH_Finish();
-
 	return EXIT_SUCCESS;
 }

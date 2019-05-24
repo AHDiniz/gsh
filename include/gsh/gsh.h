@@ -18,11 +18,6 @@
 int GSH_Init();
 
 /**
- * Function that finishes the shell:
-*/
-void GSH_Finish();
-
-/**
  * Function that tells if the shell is still running:
  * 
  * Output: bool like int that tells if the shell didn't received a exit command

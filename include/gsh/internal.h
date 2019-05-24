@@ -11,7 +11,7 @@
 #define INTERNAL_H_
 
 /**
- * Exit command: if there are no child processes, the shell exits
+ * Exit command: if there are no child processes, the shell exits. Outherwise, all child processes will be terminated first.
  * 
  * Output: bool like int that tells if the shell can exit
 */
