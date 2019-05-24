@@ -48,7 +48,8 @@ void SIGINT_Handler()
 	// Ctrl + c only works if there are no living children:
 	if(shell.childs)
 	{
-		fprintf(stderr, "OOPS :O... Looks like i still have childs alive so i can't die. (So responsible! :D)\n");
+		fprintf(stderr, "\nOOPS :O... Looks like i still have childs alive so i can't die. (So responsible! :D)\n");
+		fprintf(stderr, "gsh> ");
 	}
 	else
 	{
