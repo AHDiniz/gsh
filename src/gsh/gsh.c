@@ -62,6 +62,7 @@ void SIGTSTP_Handler()
 	signal(SIGTSTP,SIG_IGN);
 	// Stopping all children:
 	kill(0,SIGTSTP);
+	sleep(2);
 	signal(SIGTSTP,SIGTSTP_Handler);
 }
 
