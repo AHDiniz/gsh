@@ -114,6 +114,7 @@ void GSH_ReadAndExecute()
 		// Ignoring operator '->':
 		if (strncmp(tokens[i], "->", 2) == 0)
 		{
+			commands++;
 			// Getting the next token:
 			i++;
 			// Cheking if there is a identation error:
