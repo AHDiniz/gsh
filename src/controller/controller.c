@@ -156,8 +156,15 @@ static int Controller_RunCmd(char *args[], int fg)
 		}
 
 		// Trying to execute command:
-		int success = execv(args[0], args);
-		if (success == -1) goto proc_error;
+		if(strncmp(args[0], "./", 2) != 0)
+		{
+			int success = system(args[0]);
+			if (success == -1) goto proc_error;
+		} else
+		{
+			int success = execv(args[0], args);
+			if (success == -1) goto proc_error;
+		}
 	}
 	else if (pid > 0) // Id it's the father process...
 	{
