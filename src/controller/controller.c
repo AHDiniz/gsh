@@ -155,16 +155,22 @@ static int Controller_RunCmd(char *args[], int fg)
     		    close(fd);
 		}
 
-		// Trying to execute command:
-		if(strncmp(args[0], "./", 2) != 0)
+		char *cmd = malloc(6 + strlen(args[0]));
+
+		if(strncmp(args[0], ".", 1) != 0)
 		{
-			int success = system(args[0]);
-			if (success == -1) goto proc_error;
-		} else
-		{
-			int success = execv(args[0], args);
-			if (success == -1) goto proc_error;
+			strcpy(cmd,"/bin/");
+			strcat(cmd,args[0]);
 		}
+		else
+		{
+			strcpy(cmd,args[0]);
+		}
+
+		// Trying to execute command:
+		int success = execv(cmd, args);
+		free(cmd);
+		if (success == -1) goto proc_error;
 	}
 	else if (pid > 0) // Id it's the father process...
 	{
